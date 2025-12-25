@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Can I Buy It?</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        glass: "rgba(255, 255, 255, 0.1)",
+                        glassBorder: "rgba(255, 255, 255, 0.2)",
+                    },
+                    backdropBlur: {
+                        xs: '2px',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Motion (Optional, using CSS for simplicity and reliability in single file) -->
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a1c2c 0%, #4a192c 100%);
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .input-glass {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .input-glass:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        /* Custom Range Slider */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: #ffffff;
+            cursor: pointer;
+            margin-top: -6px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="p-4 md:p-8">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useMemo, useEffect } = React;
+
+        // Icons
+        const Icons = {
+            Check: () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>,
+            X: () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>,
+            Info: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
+            TrendingUp: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
+        };
+
+        const Toggle = ({ label, value, onChange, leftLabel, rightLabel }) => (
+            <div className="flex items-center justify-between mb-2">
+                <span className="text-gray-300 text-sm font-medium">{label}</span>
+                <div className="flex bg-black/20 rounded-lg p-1">
+                    <button
+                        onClick={() => onChange(true)}
+                        className={`px-3 py-1 text-xs rounded-md transition-all ${value ? 'bg-white/10 text-white shadow-sm' : 'text-gray-400 hover:text-gray-200'}`}
+                    >
+                        {leftLabel}
+                    </button>
+                    <button
+                        onClick={() => onChange(false)}
+                        className={`px-3 py-1 text-xs rounded-md transition-all ${!value ? 'bg-white/10 text-white shadow-sm' : 'text-gray-400 hover:text-gray-200'}`}
+                    >
+                        {rightLabel}
+                    </button>
+                </div>
+            </div>
+        );
+
+        const MetricSlider = ({ label, value, onChange, min = 0, max = 10 }) => (
+            <div className="mb-4">
+                <div className="flex justify-between mb-1">
+                    <span className="text-sm text-gray-300">{label}</span>
+                    <span className="text-sm text-blue-300 font-bold">{value}</span>
+                </div>
+                <input
+                    type="range"
+                    min={min}
+                    max={max}
+                    value={value}
+                    onChange={(e) => onChange(Number(e.target.value))}
+                    className="w-full"
+                />
+            </div>
+        );
+
+        const ResultCard = ({ title, value, subtext, color = "white" }) => (
+            <div className="glass-panel p-4 rounded-xl flex flex-col items-center justify-center text-center">
+                <span className="text-gray-400 text-xs uppercase tracking-wider mb-1">{title}</span>
+                <span className={`text-2xl font-bold text-${color}-400`}>{value}</span>
+                {subtext && <span className="text-xs text-gray-500 mt-1">{subtext}</span>}
+            </div>
+        );
+
+        const App = () => {
+            // Steps: 0=Financials, 1=Economics, 2=Item Input, 3=Verdict
+            const [step, setStep] = useState(0);
+
+            // State - Financials
+            const [salary, setSalary] = useState(1000);
+            const [isSalaryMonthly, setIsSalaryMonthly] = useState(true);
+            const [expenses, setExpenses] = useState(500);
+            const [isExpensesNumeric, setIsExpensesNumeric] = useState(true); // true = raw number, false = %
+
+            // State - Economics
+            const [depositRate, setDepositRate] = useState(4);
+            const [inflationRate, setInflationRate] = useState(3);
+
+            // State - Item
+            const [itemName, setItemName] = useState("");
+            const [itemPrice, setItemPrice] = useState(1000);
+            const [credit, setCredit] = useState(false);
+            const [isBNPL, setIsBNPL] = useState(true);
+            const [interestRate, setInterestRate] = useState(15);
+            const [creditTerm, setCreditTerm] = useState(12);
+            const [isUnique, setIsUnique] = useState(false);
+
+            // State - Qualitative Metrics (Item)
+            const [desire, setDesire] = useState(5);
+            const [equity, setEquity] = useState(2);
+            const [mobility, setMobility] = useState(5);
+            const [futureReturns, setFutureReturns] = useState(2);
+            const [possibilities, setPossibilities] = useState(3);
+
+            // Persistence
+            useEffect(() => {
+                const savedFin = localStorage.getItem('ciai_financials');
+                const savedEco = localStorage.getItem('ciai_economics');
+
+                if (savedFin) {
+                    const parsed = JSON.parse(savedFin);
+                    setSalary(parsed.salary);
+                    setIsSalaryMonthly(parsed.isSalaryMonthly);
+                    setExpenses(parsed.expenses);
+                    setIsExpensesNumeric(parsed.isExpensesNumeric);
+                }
+
+                if (savedEco) {
+                    const parsed = JSON.parse(savedEco);
+                    setDepositRate(parsed.depositRate);
+                    setInflationRate(parsed.inflationRate);
+                }
+
+                if (savedFin && savedEco) {
+                    // If user has set up basics, jump to Item
+                    setStep(2);
+                }
+            }, []);
+
+            const saveFinancials = () => {
+                localStorage.setItem('ciai_financials', JSON.stringify({
+                    salary, isSalaryMonthly, expenses, isExpensesNumeric
+                }));
+            };
+
+            const saveEconomics = () => {
+                localStorage.setItem('ciai_economics', JSON.stringify({
+                    depositRate, inflationRate
+                }));
+            };
+
+            const resetAll = () => {
+                localStorage.removeItem('ciai_financials');
+                localStorage.removeItem('ciai_economics');
+                setStep(0);
+                // Optional: Reset values to defaults? Keeping them might be friendlier.
+            };
+
+            // Logic
+            const stats = useMemo(() => {
+                const monthlyIncome = isSalaryMonthly ? salary : salary / 12;
+                const monthlyExpenses = isExpensesNumeric ? expenses : (monthlyIncome * (expenses / 100));
+                const disposableIncome = monthlyIncome - monthlyExpenses;
+                const dailyDisposable = disposableIncome > 0 ? disposableIncome / 30 : 0;
+                const dailyTotalIncome = monthlyIncome / 30;
+
+                const effectivePrice = credit && !isBNPL
+                    ? itemPrice * (1 + (interestRate / 100))
+                    : itemPrice;
+
+                // Time to convert life into item
+                const workDaysToEarn = dailyTotalIncome > 0 ? (effectivePrice / dailyTotalIncome) : 9999;
+
+                // Time to actually afford
+                const datesToSave = dailyDisposable > 0 ? (effectivePrice / dailyDisposable) : 9999;
+
+                // Scoring
+                // Max Score potential: 50 + bonus
+                const qualitativeScore = desire + equity + mobility + futureReturns + possibilities + (isUnique ? 10 : 0);
+
+                // Financial Drag: Higher is worse
+                // Price as % of monthly disposable
+                const affordabilityRatio = disposableIncome > 0 ? (effectivePrice / disposableIncome) : 100;
+
+                // Decision Logic
+                let decision = "NO";
+                let description = "You can't afford this.";
+                let color = "red";
+
+                if (disposableIncome <= 0) {
+                    decision = "NO";
+                    description = "You have no disposable income.";
+                    color = "red";
+                } else if (affordabilityRatio < 0.5) {
+                    decision = "YES";
+                    description = "Go for it, right now.";
+                    color = "green";
+                } else if (affordabilityRatio < 3) {
+                    // Takes 3 months or less to save
+                    if (qualitativeScore > 15) {
+                        decision = "YES";
+                        description = "Reasonable purchase.";
+                        color = "green";
+                    } else {
+                        decision = "MAYBE";
+                        description = "Do you really need it?";
+                        color = "yellow";
+                    }
+                } else if (affordabilityRatio < 12) {
+                    // Takes up to a year to save
+                    if (qualitativeScore > 30) {
+                        decision = "SAVE UP";
+                        description = `Save ${(effectivePrice / Math.ceil(datesToSave / 30)).toFixed(0)}/mo for ${Math.ceil(datesToSave / 30)} months.`;
+                        color = "blue";
+                    } else {
+                        decision = "NO";
+                        description = "Not worth the effort.";
+                        color = "red";
+                    }
+                } else {
+                    // Over a year to save
+                    if (qualitativeScore > 40 && futureReturns > 7) {
+                        decision = "INVEST";
+                        description = "Only if it brings ROI.";
+                        color = "purple";
+                    } else {
+                        decision = "PURE GARBAGE";
+                        description = "Too expensive for its value.";
+                        color = "red";
+                    }
+                }
+
+                // Financial Calcs for "True Cost"
+                let creditTotalCost = itemPrice;
+                let monthlyPayment = 0;
+
+                if (credit) {
+                    if (isBNPL) {
+                        creditTotalCost = itemPrice;
+                        monthlyPayment = itemPrice / (creditTerm || 1);
+                    } else {
+                        const r = (interestRate / 100) / 12;
+                        const n = creditTerm;
+                        if (r === 0) {
+                            monthlyPayment = itemPrice / n;
+                            creditTotalCost = itemPrice;
+                        } else {
+                            monthlyPayment = itemPrice * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+                            creditTotalCost = monthlyPayment * n;
+                        }
+                    }
+                }
+
+                const futureValue10Y = itemPrice * Math.pow(1 + (depositRate / 100), 10);
+                const opportunityCost10Y = futureValue10Y - itemPrice;
+
+                return {
+                    workDaysToEarn,
+                    datesToSave,
+                    decision,
+                    description,
+                    color,
+                    creditTotalCost,
+                    opportunityCost10Y
+                };
+
+            }, [salary, isSalaryMonthly, expenses, isExpensesNumeric, itemPrice, credit, isBNPL, interestRate, creditTerm, depositRate, desire, equity, mobility, futureReturns, possibilities, isUnique]);
+
+
+            // Navigation Handlers
+            const goNext = () => {
+                if (step === 0) saveFinancials();
+                if (step === 1) saveEconomics();
+                setStep(s => s + 1);
+                window.scrollTo(0, 0);
+            };
+
+            const goBack = () => {
+                setStep(s => s - 1);
+                window.scrollTo(0, 0);
+            };
+
+            const renderHeader = () => (
+                <div className="fixed top-0 left-0 right-0 z-50 glass-panel border-b border-white/10 backdrop-blur-xl bg-black/40">
+                    <div className="max-w-md mx-auto px-4 py-4 flex items-center justify-between">
+                        <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
+                            Can I afford it?
+                        </h1>
+                        {step >= 2 && (
+                            <button
+                                onClick={resetAll}
+                                className="text-xs text-gray-400 hover:text-white underline"
+                            >
+                                Reset finances
+                            </button>
+                        )}
+                    </div>
+                </div>
+            );
+
+            const renderFooter = () => (
+                <div className="fixed bottom-0 left-0 right-0 z-50 glass-panel border-t border-white/10 backdrop-blur-xl bg-black/40">
+                    <div className="max-w-md mx-auto px-4 py-3 text-center">
+                        <div className="text-[10px] text-gray-500">
+                            Can I Afford It? • Made by axelrod.co • {step > 1 ? "Finances saved locally" : "Setup Mode"}
+                        </div>
+                    </div>
+                </div>
+            );
+
+            const renderFinancials = () => (
+                <div className="glass-panel p-6 rounded-2xl animate-fade-in">
+                    <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+                        <span className="text-green-400">$</span> Financials
+                    </h2>
+                    <p className="text-sm text-gray-400 mb-6">Let's start with your income and expenses.</p>
+
+                    <Toggle
+                        label="Income"
+                        value={isSalaryMonthly}
+                        onChange={setIsSalaryMonthly}
+                        leftLabel="Monthly"
+                        rightLabel="Yearly"
+                    />
+                    <input
+                        type="number"
+                        className="w-full input-glass p-4 rounded-lg mb-6 text-lg"
+                        value={salary}
+                        onChange={e => setSalary(Number(e.target.value))}
+                        placeholder="e.g. 1000"
+                    />
+
+                    <Toggle
+                        label="Expenses"
+                        value={isExpensesNumeric}
+                        onChange={setIsExpensesNumeric}
+                        leftLabel="Amount"
+                        rightLabel="%"
+                    />
+                    <input
+                        type="number"
+                        className="w-full input-glass p-4 rounded-lg mb-6 text-lg"
+                        value={expenses}
+                        onChange={e => setExpenses(Number(e.target.value))}
+                        placeholder="e.g. 500"
+                    />
+
+                    <button
+                        onClick={goNext}
+                        className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-xl shadow-lg transition-all active:scale-95"
+                    >
+                        Next
+                    </button>
+                </div>
+            );
+
+            const renderEconomics = () => (
+                <div className="glass-panel p-6 rounded-2xl animate-fade-in">
+                    <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+                        <span className="text-purple-400">📈</span> Economics
+                    </h2>
+                    <p className="text-sm text-gray-400 mb-6">Market conditions affecting your money.</p>
+
+                    <div className="mb-6">
+                        <label className="text-sm text-gray-300 block mb-2">Deposit Rate (%)</label>
+                        <input
+                            type="number"
+                            className="w-full input-glass p-4 rounded-lg text-lg"
+                            value={depositRate}
+                            onChange={e => setDepositRate(Number(e.target.value))}
+                        />
+                    </div>
+
+                    <div className="mb-8">
+                        <label className="text-sm text-gray-300 block mb-2">Inflation Rate (%)</label>
+                        <input
+                            type="number"
+                            className="w-full input-glass p-4 rounded-lg text-lg"
+                            value={inflationRate}
+                            onChange={e => setInflationRate(Number(e.target.value))}
+                        />
+                    </div>
+
+                    <div className="flex gap-4">
+                        <button
+                            onClick={goBack}
+                            className="w-1/3 bg-white/10 hover:bg-white/20 text-white font-bold py-4 rounded-xl transition-all"
+                        >
+                            Back
+                        </button>
+                        <button
+                            onClick={goNext}
+                            className="w-2/3 bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-xl shadow-lg transition-all active:scale-95"
+                        >
+                            Next
+                        </button>
+                    </div>
+                </div>
+            );
+
+            const renderItemInput = () => (
+                <div className="glass-panel p-6 rounded-2xl animate-fade-in space-y-6">
+                    <div>
+                        <h2 className="text-xl font-bold mb-1 flex items-center gap-2">
+                            <span className="text-blue-400">🛍</span> New Purchase
+                        </h2>
+                        <p className="text-xs text-gray-400">Tell us about what you want to buy.</p>
+                    </div>
+
+                    <div>
+                        <label className="text-sm text-gray-400 block mb-1">Price</label>
+                        <input
+                            type="number"
+                            className="w-full input-glass p-3 rounded-lg text-lg font-bold text-green-300"
+                            value={itemPrice}
+                            onChange={e => setItemPrice(Number(e.target.value))}
+                        />
+                    </div>
+
+                    <div className="glass-panel p-4 rounded-xl bg-black/20">
+                        <div className="flex items-center justify-between">
+                            <span className="text-gray-300 font-medium">Credit / BNPL?</span>
+                            <button
+                                onClick={() => setCredit(!credit)}
+                                className={`w-12 h-6 rounded-full transition-colors relative ${credit ? 'bg-blue-500' : 'bg-gray-600'}`}
+                            >
+                                <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all ${credit ? 'left-7' : 'left-1'}`} />
+                            </button>
+                        </div>
+
+                        {credit && (
+                            <div className="mt-4 pt-4 border-t border-white/10 animate-fade-in">
+                                <Toggle
+                                    label="Type"
+                                    value={isBNPL}
+                                    onChange={setIsBNPL}
+                                    leftLabel="BNPL (0%)"
+                                    rightLabel="Interest"
+                                />
+                                {!isBNPL && (
+                                    <div className="flex gap-2 mt-2">
+                                        <div className="w-1/2">
+                                            <label className="text-xs text-gray-400">Interest %</label>
+                                            <input
+                                                type="number"
+                                                className="w-full input-glass p-2 rounded-lg mt-1"
+                                                value={interestRate}
+                                                onChange={e => setInterestRate(Number(e.target.value))}
+                                            />
+                                        </div>
+                                        <div className="w-1/2">
+                                            <label className="text-xs text-gray-400">Months</label>
+                                            <input
+                                                type="number"
+                                                className="w-full input-glass p-2 rounded-lg mt-1"
+                                                value={creditTerm}
+                                                onChange={e => setCreditTerm(Number(e.target.value))}
+                                            />
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="glass-panel p-4 rounded-xl bg-black/20">
+                        <div className="flex items-center justify-between mb-4">
+                            <span className="text-gray-300 font-medium">Is it unique?</span>
+                            <button
+                                onClick={() => setIsUnique(!isUnique)}
+                                className={`px-3 py-1 text-sm rounded-lg transition-all border ${isUnique ? 'bg-yellow-500/20 border-yellow-500 text-yellow-300' : 'border-gray-600 text-gray-400'}`}
+                            >
+                                {isUnique ? 'Yes 🦄' : 'No'}
+                            </button>
+                        </div>
+
+                        <div className="space-y-4">
+                            <MetricSlider label="Desire (Do you love it?)" value={desire} onChange={setDesire} />
+                            <MetricSlider label="Equity (Wealth builder?)" value={equity} onChange={setEquity} />
+                            <MetricSlider label="Mobility (Resale value?)" value={mobility} onChange={setMobility} />
+                            <MetricSlider label="ROI (Will it earn money?)" value={futureReturns} onChange={setFutureReturns} />
+                            <MetricSlider label="Growth (New opportunities?)" value={possibilities} onChange={setPossibilities} />
+                        </div>
+                    </div>
+
+                    <button
+                        onClick={() => {
+                            setStep(3);
+                            window.scrollTo(0, 0);
+                        }}
+                        className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-400 hover:to-emerald-500 text-white font-bold py-4 rounded-xl shadow-lg transition-all active:scale-95 text-lg"
+                    >
+                        Can I afford it?
+                    </button>
+                </div>
+            );
+
+            const renderVerdict = () => (
+                <div className="space-y-6 animate-fade-in">
+                    <div className="glass-panel p-8 rounded-2xl relative overflow-hidden text-center">
+                        <div className={`absolute top-0 left-0 w-full h-2 bg-${stats.color}-500 shadow-[0_0_20px_rgba(var(--color-${stats.color}-500),0.5)]`}></div>
+                        <h2 className="text-sm uppercase tracking-widest text-gray-400 mb-3">The Verdict</h2>
+                        <div className={`text-6xl font-black text-${stats.color}-400 mb-4 tracking-tight`}>
+                            {stats.decision}
+                        </div>
+                        <p className="text-xl text-gray-200 font-medium leading-relaxed">{stats.description}</p>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                        <ResultCard
+                            title="Work Cost"
+                            value={`${stats.workDaysToEarn.toFixed(1)} Days`}
+                            subtext="of your life"
+                        />
+                        <ResultCard
+                            title="Save Time"
+                            value={stats.datesToSave > 3650 ? "> 10 Years" : `${stats.datesToSave.toFixed(0)} Days`}
+                            subtext="to afford it"
+                        />
+                    </div>
+
+                    <div className="glass-panel p-4 rounded-2xl">
+                        <div className="grid grid-cols-2 gap-4">
+                            <div>
+                                <span className="text-xs text-gray-400 uppercase tracking-wider block mb-1">True Credit Cost</span>
+                                <span className="text-lg font-bold text-orange-300">
+                                    ${stats.creditTotalCost.toFixed(0)}
+                                </span>
+                            </div>
+                            <div>
+                                <span className="text-xs text-gray-400 uppercase tracking-wider block mb-1">10y Opportunity</span>
+                                <span className="text-lg font-bold text-yellow-300">
+                                    ${stats.opportunityCost10Y.toFixed(0)}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button
+                        onClick={() => {
+                            setStep(2);
+                            window.scrollTo(0, 0);
+                        }}
+                        className="w-full bg-white/10 hover:bg-white/20 text-white font-bold py-4 rounded-xl transition-all"
+                    >
+                        Adjust Input
+                    </button>
+                </div>
+            );
+
+            return (
+                <div className="max-w-md mx-auto min-h-screen pt-24 pb-20 px-4 md:px-0">
+                    {renderHeader()}
+
+                    {step === 0 && renderFinancials()}
+                    {step === 1 && renderEconomics()}
+                    {step === 2 && renderItemInput()}
+                    {step === 3 && renderVerdict()}
+
+                    {renderFooter()}
+                </div>
+            );
+        };
+
+        const rootString = document.getElementById('root');
+        const root = ReactDOM.createRoot(rootString);
+        root.render(<App />);
+    </script>
+</body>
+
+</html>
