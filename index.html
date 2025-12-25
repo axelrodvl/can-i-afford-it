@@ -34,7 +34,8 @@
             background: linear-gradient(135deg, #1a1c2c 0%, #4a192c 100%);
             color: #ffffff;
             font-family: 'Inter', sans-serif;
-            min-height: 100vh;
+            min-height: 100dvh;
+            overflow-x: hidden;
         }
 
         .glass-panel {
@@ -101,7 +102,7 @@
     </style>
 </head>
 
-<body class="p-4 md:p-8">
+<body class="antialiased">
     <div id="root"></div>
 
     <script type="text/babel">
@@ -380,7 +381,7 @@
                 <div className="fixed bottom-0 left-0 right-0 z-50 glass-panel border-t border-white/10 backdrop-blur-xl bg-black/40">
                     <div className="max-w-md mx-auto px-4 py-3 text-center">
                         <div className="text-[10px] text-gray-500">
-                            Can I Afford It? • Made by axelrod.co • {step > 1 ? "Finances saved locally" : "Setup Mode"}
+                            Can I Afford It? • Made by <a href="axelrod.co">axelrod.co</a>
                         </div>
                     </div>
                 </div>
@@ -627,7 +628,7 @@
             );
 
             return (
-                <div className="max-w-md mx-auto min-h-screen pt-24 pb-20 px-4 md:px-0">
+                <div className="max-w-md mx-auto min-h-[100dvh] pt-24 pb-20 px-4 md:px-0">
                     {renderHeader()}
 
                     {step === 0 && renderFinancials()}
