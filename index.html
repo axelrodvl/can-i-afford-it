@@ -161,9 +161,674 @@
             </div>
         );
 
+        const TRANSLATIONS = {
+            en: {
+                title: "Can I afford it?",
+                welcome: {
+                    subtitle: "Your personal financial reality check.",
+                    privacy: "Privacy First",
+                    privacyText: "All your data is stored <strong>locally in your browser</strong>. It is never sent to any server.",
+                    daily: "Daily usage",
+                    dailyText: "Set up your financial details once, then use the app every day.",
+                    getStarted: "Get Started"
+                },
+                financials: {
+                    title: "Financials",
+                    desc: "Let's start with your income and expenses.",
+                    income: { label: "Income", monthly: "Monthly", yearly: "Yearly", placeholder: "e.g. 1000" },
+                    expenses: { label: "Expenses", amount: "Amount", percent: "%", placeholder: "e.g. 500" },
+                    next: "Next"
+                },
+                economics: {
+                    title: "Economics",
+                    desc: "Market conditions affecting your money.",
+                    deposit: "Deposit Rate (%)",
+                    inflation: "Inflation Rate (%)",
+                    back: "Back",
+                    next: "Next"
+                },
+                item: {
+                    title: "New Purchase",
+                    desc: "Tell us about what you want to buy.",
+                    price: "Price",
+                    credit: { label: "Credit / BNPL?", type: "Type", bnpl: "BNPL (0%)", interest: "Interest", interestRate: "Interest %", months: "Months" },
+                    unique: { label: "Is it unique?", yes: "Yes 🦄", no: "No" },
+                    sliders: {
+                        desire: "Desire (Do you love it?)",
+                        equity: "Equity (Wealth builder?)",
+                        mobility: "Mobility (Resale value?)",
+                        roi: "ROI (Will it earn money?)",
+                        growth: "Growth (New opportunities?)"
+                    },
+                    cta: "Can I afford it?"
+                },
+                verdict: {
+                    title: "The Verdict",
+                    yes: "YES",
+                    maybe: "MAYBE",
+                    saveUp: "SAVE UP",
+                    no: "NO",
+                    invest: "INVEST",
+                    garbage: "PURE GARBAGE",
+                    desc: {
+                        noDisposable: "You have no disposable income.",
+                        goForIt: "Go for it, right now.",
+                        reasonable: "Reasonable purchase.",
+                        needIt: "Do you really need it?",
+                        save: (amount, months) => `Save ${amount}/mo for ${months} months.`,
+                        notWorth: "Not worth the effort.",
+                        roi: "Only if it brings ROI.",
+                        expensive: "Too expensive for its value."
+                    },
+                    workCost: "Work Cost",
+                    life: "of your life",
+                    saveTime: "Save Time",
+                    toAfford: "to afford it",
+                    years: "> 10 Years",
+                    days: "Days",
+                    trueCost: "True Cost",
+                    opportunity: "10y Opportunity",
+                    adjust: "Adjust Input"
+                },
+                footer: {
+                    madeBy: "Can I Afford It? • Made by "
+                },
+                reset: "Reset finances"
+            },
+            es: {
+                title: "¿Puedo permitírmelo?",
+                welcome: {
+                    subtitle: "Tu chequeo de realidad financiera personal.",
+                    privacy: "Privacidad Primero",
+                    privacyText: "Todos tus datos se guardan <strong>localmente en tu navegador</strong>. Nunca se envían a ningún servidor.",
+                    daily: "Uso diario",
+                    dailyText: "Configura tus detalles una vez, úsalo a diario.",
+                    getStarted: "Comenzar"
+                },
+                financials: {
+                    title: "Finanzas",
+                    desc: "Empecemos con tus ingresos y gastos.",
+                    income: { label: "Ingresos", monthly: "Mensual", yearly: "Anual", placeholder: "ej. 1000" },
+                    expenses: { label: "Gastos", amount: "Cantidad", percent: "%", placeholder: "ej. 500" },
+                    next: "Siguiente"
+                },
+                economics: {
+                    title: "Economía",
+                    desc: "Condiciones del mercado afectando tu dinero.",
+                    deposit: "Tasa Depósito (%)",
+                    inflation: "Inflación (%)",
+                    back: "Atrás",
+                    next: "Siguiente"
+                },
+                item: {
+                    title: "Nueva Compra",
+                    desc: "Cuéntanos qué quieres comprar.",
+                    price: "Precio",
+                    credit: { label: "¿Crédito / BNPL?", type: "Tipo", bnpl: "Sin Inter. (0%)", interest: "Interés", interestRate: "% Interés", months: "Meses" },
+                    unique: { label: "¿Es único?", yes: "Sí 🦄", no: "No" },
+                    sliders: {
+                        desire: "Deseo (¿Lo amas?)",
+                        equity: "Patrimonio (¿Genera riqueza?)",
+                        mobility: "Movilidad (¿Valor reventa?)",
+                        roi: "ROI (¿Ganarás dinero?)",
+                        growth: "Crecimiento (¿Nuevas oportunidades?)"
+                    },
+                    cta: "¿Puedo permitírmelo?"
+                },
+                verdict: {
+                    title: "El Veredicto",
+                    yes: "SÍ",
+                    maybe: "QUIZÁS",
+                    saveUp: "AHORRA",
+                    no: "NO",
+                    invest: "INVIERTE",
+                    garbage: "BASURA PURA",
+                    desc: {
+                        noDisposable: "No tienes ingresos disponibles.",
+                        goForIt: "Adelante, ahora mismo.",
+                        reasonable: "Compra razonable.",
+                        needIt: "¿Realmente lo necesitas?",
+                        save: (amount, months) => `Ahorra ${amount}/mes por ${months} meses.`,
+                        notWorth: "No vale el esfuerzo.",
+                        roi: "Solo si trae ROI.",
+                        expensive: "Demasiado caro para su valor."
+                    },
+                    workCost: "Costo Laboral",
+                    life: "de tu vida",
+                    saveTime: "Tiempo Ahorro",
+                    toAfford: "para pagarlo",
+                    years: "> 10 Años",
+                    days: "Días",
+                    trueCost: "Costo Real",
+                    opportunity: "Oportunidad 10a",
+                    adjust: "Ajustar"
+                },
+                footer: {
+                    madeBy: "Can I Afford It? • Hecho por "
+                },
+                reset: "Reiniciar finanzas"
+            },
+            de: {
+                title: "Kann ich es mir leisten?",
+                welcome: {
+                    subtitle: "Dein persönlicher Finanz-Realitätscheck.",
+                    privacy: "Datenschutz Zuerst",
+                    privacyText: "Alle deine Daten werden <strong>lokal in deinem Browser</strong> gespeichert. Sie werden nie gesendet.",
+                    daily: "Tägliche Nutzung",
+                    dailyText: "Einmal einrichten, täglich nutzen.",
+                    getStarted: "Loslegen"
+                },
+                financials: {
+                    title: "Finanzen",
+                    desc: "Beginnen wir mit deinen Einnahmen und Ausgaben.",
+                    income: { label: "Einkommen", monthly: "Monatlich", yearly: "Jährlich", placeholder: "z.B. 1000" },
+                    expenses: { label: "Ausgaben", amount: "Betrag", percent: "%", placeholder: "z.B. 500" },
+                    next: "Weiter"
+                },
+                economics: {
+                    title: "Wirtschaft",
+                    desc: "Marktbedingungen, die dein Geld beeinflussen.",
+                    deposit: "Zinssatz (%)",
+                    inflation: "Inflation (%)",
+                    back: "Zurück",
+                    next: "Weiter"
+                },
+                item: {
+                    title: "Neuer Kauf",
+                    desc: "Sag uns, was du kaufen möchtest.",
+                    price: "Preis",
+                    credit: { label: "Kredit / Raten?", type: "Typ", bnpl: "0% Finz.", interest: "Zinsen", interestRate: "Zins %", months: "Monate" },
+                    unique: { label: "Ist es einzigartig?", yes: "Ja 🦄", no: "Nein" },
+                    sliders: {
+                        desire: "Verlangen (Liebst du es?)",
+                        equity: "Wert (Vermögensaufbau?)",
+                        mobility: "Mobilität (Wiederverkauf?)",
+                        roi: "ROI (Verdienst du daran?)",
+                        growth: "Wachstum (Neue Chancen?)"
+                    },
+                    cta: "Kann ich es mir leisten?"
+                },
+                verdict: {
+                    title: "Das Urteil",
+                    yes: "JA",
+                    maybe: "VIELLEICHT",
+                    saveUp: "SPAREN",
+                    no: "NEIN",
+                    invest: "INVESTIEREN",
+                    garbage: "REINER MÜLL",
+                    desc: {
+                        noDisposable: "Du hast kein verfügbares Einkommen.",
+                        goForIt: "Mach es, sofort.",
+                        reasonable: "Vernünftiger Kauf.",
+                        needIt: "Brauchst du es wirklich?",
+                        save: (amount, months) => `Spare ${amount}/Mo für ${months} Monate.`,
+                        notWorth: "Die Mühe nicht wert.",
+                        roi: "Nur wenn es ROI bringt.",
+                        expensive: "Zu teuer für den Wert."
+                    },
+                    workCost: "Arbeitskosten",
+                    life: "deines Lebens",
+                    saveTime: "Sparzeit",
+                    toAfford: "bis zum Kauf",
+                    years: "> 10 Jahre",
+                    days: "Tage",
+                    trueCost: "Wahre Kosten",
+                    opportunity: "10J Chance",
+                    adjust: "Anpassen"
+                },
+                footer: {
+                    madeBy: "Can I Afford It? • Gemacht von "
+                },
+                reset: "Finanzen zurücksetzen"
+            },
+            fr: {
+                title: "Puis-je me le permettre ?",
+                welcome: {
+                    subtitle: "Votre bilan de réalité financière personnel.",
+                    privacy: "Confidentialité d'abord",
+                    privacyText: "Toutes vos données sont stockées <strong>localement dans votre navigateur</strong>. Jamais envoyées.",
+                    daily: "Usage quotidien",
+                    dailyText: "Configurez une fois, utilisez tous les jours.",
+                    getStarted: "Commencer"
+                },
+                financials: {
+                    title: "Finances",
+                    desc: "Commençons par vos revenus et dépenses.",
+                    income: { label: "Revenus", monthly: "Mensuel", yearly: "Annuel", placeholder: "ex. 1000" },
+                    expenses: { label: "Dépenses", amount: "Montant", percent: "%", placeholder: "ex. 500" },
+                    next: "Suivant"
+                },
+                economics: {
+                    title: "Économie",
+                    desc: "Conditions du marché affectant votre argent.",
+                    deposit: "Taux Dépôt (%)",
+                    inflation: "Inflation (%)",
+                    back: "Retour",
+                    next: "Suivant"
+                },
+                item: {
+                    title: "Nouvel Achat",
+                    desc: "Dites-nous ce que vous voulez acheter.",
+                    price: "Prix",
+                    credit: { label: "Crédit / BNPL ?", type: "Type", bnpl: "Sans Frais (0%)", interest: "Intérêts", interestRate: "% Intérêt", months: "Mois" },
+                    unique: { label: "Est-ce unique ?", yes: "Oui 🦄", no: "Non" },
+                    sliders: {
+                        desire: "Désir (L'aimez-vous ?)",
+                        equity: "Patrimoine (Richesse ?)",
+                        mobility: "Mobilité (Revente ?)",
+                        roi: "ROI (Rentable ?)",
+                        growth: "Croissance (Opportunités ?)"
+                    },
+                    cta: "Puis-je me le permettre ?"
+                },
+                verdict: {
+                    title: "Le Verdict",
+                    yes: "OUI",
+                    maybe: "PEUT-ÊTRE",
+                    saveUp: "ÉPARGNEZ",
+                    no: "NON",
+                    invest: "INVESTISSEZ",
+                    garbage: "PURE POUBELLE",
+                    desc: {
+                        noDisposable: "Vous n'avez aucun revenu disponible.",
+                        goForIt: "Allez-y, tout de suite.",
+                        reasonable: "Achat raisonnable.",
+                        needIt: "En avez-vous vraiment besoin ?",
+                        save: (amount, months) => `Épargnez ${amount}/mois pdt ${months} mois.`,
+                        notWorth: "Ça ne vaut pas l'effort.",
+                        roi: "Seulement si ROI positif.",
+                        expensive: "Trop cher pour sa valeur."
+                    },
+                    workCost: "Coût Travail",
+                    life: "de votre vie",
+                    saveTime: "Temps Épargne",
+                    toAfford: "pour l'obtenir",
+                    years: "> 10 Ans",
+                    days: "Jours",
+                    trueCost: "Coût Réel",
+                    opportunity: "Opportunité 10a",
+                    adjust: "Ajuster"
+                },
+                footer: {
+                    madeBy: "Can I Afford It? • Fait par "
+                },
+                reset: "Réinitialiser"
+            },
+            it: {
+                title: "Posso permettermelo?",
+                welcome: {
+                    subtitle: "Il tuo controllo della realtà finanziaria.",
+                    privacy: "Privacy Prima di Tutto",
+                    privacyText: "Tutti i tuoi dati sono salvati <strong>localmente nel browser</strong>. Mai inviati a server.",
+                    daily: "Uso quotidiano",
+                    dailyText: "Imposta una volta, usa ogni giorno.",
+                    getStarted: "Inizia"
+                },
+                financials: {
+                    title: "Finanze",
+                    desc: "Iniziamo con le tue entrate e uscite.",
+                    income: { label: "Entrate", monthly: "Mensile", yearly: "Annuale", placeholder: "es. 1000" },
+                    expenses: { label: "Spese", amount: "Importo", percent: "%", placeholder: "es. 500" },
+                    next: "Avanti"
+                },
+                economics: {
+                    title: "Economia",
+                    desc: "Condizioni di mercato che influenzano i tuoi soldi.",
+                    deposit: "Tasso Deposito (%)",
+                    inflation: "Inflazione (%)",
+                    back: "Indietro",
+                    next: "Avanti"
+                },
+                item: {
+                    title: "Nuovo Acquisto",
+                    desc: "Cosa vuoi comprare?",
+                    price: "Prezzo",
+                    credit: { label: "Credito / Rate?", type: "Tipo", bnpl: "Tasso 0%", interest: "Interessi", interestRate: "% Interesse", months: "Mesi" },
+                    unique: { label: "È unico?", yes: "Sì 🦄", no: "No" },
+                    sliders: {
+                        desire: "Desiderio (Lo ami?)",
+                        equity: "Valore (Ricchezza?)",
+                        mobility: "Mobilità (Rivendita?)",
+                        roi: "ROI (Guadagno?)",
+                        growth: "Crescita (Opportunità?)"
+                    },
+                    cta: "Posso permettermelo?"
+                },
+                verdict: {
+                    title: "Il Verdetto",
+                    yes: "SÌ",
+                    maybe: "FORSE",
+                    saveUp: "RISPARMIA",
+                    no: "NO",
+                    invest: "INVESTI",
+                    garbage: "SPAZZATURA",
+                    desc: {
+                        noDisposable: "Non hai reddito disponibile.",
+                        goForIt: "Fallo, ora.",
+                        reasonable: "Acquisto ragionevole.",
+                        needIt: "Ne hai davvero bisogno?",
+                        save: (amount, months) => `Risparmia ${amount}/mese per ${months} mesi.`,
+                        notWorth: "Non vale la pena.",
+                        roi: "Solo se porta ROI.",
+                        expensive: "Troppo caro per il valore."
+                    },
+                    workCost: "Costo Lavoro",
+                    life: "della tua vita",
+                    saveTime: "Tempo Risparmio",
+                    toAfford: "per averlo",
+                    years: "> 10 Anni",
+                    days: "Giorni",
+                    trueCost: "Costo Vero",
+                    opportunity: "Opportunità 10a",
+                    adjust: "Modifica"
+                },
+                footer: {
+                    madeBy: "Can I Afford It? • Fatto da "
+                },
+                reset: "Resetta finanze"
+            },
+            ru: {
+                title: "Могу ли я это купить?",
+                welcome: {
+                    subtitle: "Ваша личная финансовая проверка реальности.",
+                    privacy: "Приватность",
+                    privacyText: "Все данные хранятся <strong>локально в браузере</strong>. Они никуда не отправляются.",
+                    daily: "Ежедневное использование",
+                    dailyText: "Настройте один раз, используйте каждый день.",
+                    getStarted: "Начать"
+                },
+                financials: {
+                    title: "Финансы",
+                    desc: "Начнем с ваших доходов и расходов.",
+                    income: { label: "Доход", monthly: "В месяц", yearly: "В год", placeholder: "напр. 1000" },
+                    expenses: { label: "Расходы", amount: "Сумма", percent: "%", placeholder: "напр. 500" },
+                    next: "Далее"
+                },
+                economics: {
+                    title: "Экономика",
+                    desc: "Рыночные условия, влияющие на деньги.",
+                    deposit: "Ставка по вкладу (%)",
+                    inflation: "Инфляция (%)",
+                    back: "Назад",
+                    next: "Далее"
+                },
+                item: {
+                    title: "Новая покупка",
+                    desc: "Расскажите, что хотите купить.",
+                    price: "Цена",
+                    credit: { label: "Кредит / Рассрочка?", type: "Тип", bnpl: "Б/П Рассрочка", interest: "Проценты", interestRate: "% Ставка", months: "Месяцев" },
+                    unique: { label: "Это уникально?", yes: "Да 🦄", no: "Нет" },
+                    sliders: {
+                        desire: "Желание (насколько сильно хотите?)",
+                        equity: "Капитал (создает богатство?)",
+                        mobility: "Ликвидность (возможность перепродажи?)",
+                        roi: "ROI (принесет деньги?)",
+                        growth: "Рост (новые возможности?)"
+                    },
+                    cta: "Могу ли я это купить?"
+                },
+                verdict: {
+                    title: "Вердикт",
+                    yes: "ДА",
+                    maybe: "МОЖЕТ БЫТЬ",
+                    saveUp: "КОПИТЕ",
+                    no: "НЕТ",
+                    invest: "ИНВЕСТИРУЙ",
+                    garbage: "МУСОР",
+                    desc: {
+                        noDisposable: "У вас нет свободных денег.",
+                        goForIt: "Берите, прямо сейчас.",
+                        reasonable: "Разумная покупка.",
+                        needIt: "Вам это точно нужно?",
+                        save: (amount, months) => `Откладывайте ${amount}/мес ${months} мес.`,
+                        notWorth: "Не стоит усилий.",
+                        roi: "Только если есть ROI.",
+                        expensive: "Слишком дорого."
+                    },
+                    workCost: "Рабочие дни",
+                    life: "вашей жизни",
+                    saveTime: "Дни накопления",
+                    toAfford: "чтобы купить",
+                    years: "> 10 лет",
+                    days: "дней",
+                    trueCost: "Реальная цена",
+                    opportunity: "Упущенная выгода за 10 лет",
+                    adjust: "Изменить"
+                },
+                footer: {
+                    madeBy: "Can I Afford It? • Сделано "
+                },
+                reset: "Сбросить финансы"
+            },
+            tr: {
+                title: "Bunu alabilir miyim?",
+                welcome: {
+                    subtitle: "Kişisel finansal gerçeklik kontrolünüz.",
+                    privacy: "Önce Gizlilik",
+                    privacyText: "Tüm verileriniz <strong>tarayıcınızda yerel olarak</strong> saklanır. Asla sunucuya gönderilmez.",
+                    daily: "Günlük Kullanım",
+                    dailyText: "Bir kez kurun, her gün kullanın.",
+                    getStarted: "Başla"
+                },
+                financials: {
+                    title: "Finansallar",
+                    desc: "Gelir ve giderlerinizle başlayalım.",
+                    income: { label: "Gelir", monthly: "Aylık", yearly: "Yıllık", placeholder: "örn. 1000" },
+                    expenses: { label: "Giderler", amount: "Tutar", percent: "%", placeholder: "örn. 500" },
+                    next: "İleri"
+                },
+                economics: {
+                    title: "Ekonomi",
+                    desc: "Paranızı etkileyen piyasa koşulları.",
+                    deposit: "Mevduat Faizi (%)",
+                    inflation: "Enflasyon (%)",
+                    back: "Geri",
+                    next: "İleri"
+                },
+                item: {
+                    title: "Yeni Satın Alma",
+                    desc: "Ne almak istediğinizi söyleyin.",
+                    price: "Fiyat",
+                    credit: { label: "Kredi / Taksit?", type: "Tip", bnpl: "Faizsiz (0%)", interest: "Faizli", interestRate: "Faiz %", months: "Ay" },
+                    unique: { label: "Eşsiz mi?", yes: "Evet 🦄", no: "Hayır" },
+                    sliders: {
+                        desire: "Arzu (Seviyor musun?)",
+                        equity: "Varlık (Değer katar mı?)",
+                        mobility: "Satılabilirlik (2. El?)",
+                        roi: "ROI (Para kazandırır mı?)",
+                        growth: "Büyüme (Fırsat yaratır mı?)"
+                    },
+                    cta: "Alabilir miyim?"
+                },
+                verdict: {
+                    title: "Sonuç",
+                    yes: "EVET",
+                    maybe: "BELKİ",
+                    saveUp: "BİRİKTİR",
+                    no: "HAYIR",
+                    invest: "YATIRIM YAP",
+                    garbage: "ÇÖP",
+                    desc: {
+                        noDisposable: "Harcanabilir gelirin yok.",
+                        goForIt: "Al gitsin, hemen.",
+                        reasonable: "Mantıklı alışveriş.",
+                        needIt: "Gerçekten lazım mı?",
+                        save: (amount, months) => `${months} ay boyunca ${amount}/ay biriktir.`,
+                        notWorth: "Zahmete değmez.",
+                        roi: "Sadece ROI varsa.",
+                        expensive: "Değerine göre pahalı."
+                    },
+                    workCost: "Emek Maliyeti",
+                    life: "hayatından",
+                    saveTime: "Birikim Süresi",
+                    toAfford: "almak için",
+                    years: "> 10 Yıl",
+                    days: "Gün",
+                    trueCost: "Gerçek Maliyet",
+                    opportunity: "10y Fırsat Maliyeti",
+                    adjust: "Düzenle"
+                },
+                footer: {
+                    madeBy: "Can I Afford It? • Yapımcı "
+                },
+                reset: "Sıfırla"
+            },
+            ar: {
+                title: "هل أستطيع شرائه؟",
+                welcome: {
+                    subtitle: "فحص الواقع المالي الشخصي الخاص بك.",
+                    privacy: "الخصوصية أولاً",
+                    privacyText: "يتم تخزين جميع بياناتك <strong>محليًا في متصفحك</strong>. لا يتم إرسالها لأي خادم.",
+                    daily: "استخدام يومي",
+                    dailyText: "قم بالإعداد مرة واحدة، واستخدمه كل يوم.",
+                    getStarted: "ابدأ الآن"
+                },
+                financials: {
+                    title: "المالية",
+                    desc: "لنبدأ بدخلك ومصاريفك.",
+                    income: { label: "الدخل", monthly: "شهري", yearly: "سنوي", placeholder: "مثل 1000" },
+                    expenses: { label: "المصاريف", amount: "مبلغ", percent: "%", placeholder: "مثل 500" },
+                    next: "التالي"
+                },
+                economics: {
+                    title: "الاقتصاد",
+                    desc: "ظروف السوق التي تؤثر على أموالك.",
+                    deposit: "فائدة الإيداع (%)",
+                    inflation: "التضخم (%)",
+                    back: "رجوع",
+                    next: "التالي"
+                },
+                item: {
+                    title: "شراء جديد",
+                    desc: "أخبرنا ماذا تريد أن تشتري.",
+                    price: "السعر",
+                    credit: { label: "تقسيط / دين؟", type: "النوع", bnpl: "بدون فوائد (0%)", interest: "فائدة", interestRate: "نسبة الفائدة %", months: "شهور" },
+                    unique: { label: "هل هو تفرّد؟", yes: "نعم 🦄", no: "لا" },
+                    sliders: {
+                        desire: "رغبة (هل تحبه؟)",
+                        equity: "أصول (بناء ثروة؟)",
+                        mobility: "سيولة (بيع لاحق؟)",
+                        roi: "عائد (هل سيربح؟)",
+                        growth: "نمو (فرص جديدة؟)"
+                    },
+                    cta: "هل أستطيع شرائه؟"
+                },
+                verdict: {
+                    title: "الحكم",
+                    yes: "نعم",
+                    maybe: "ربما",
+                    saveUp: "ادّخر",
+                    no: "لا",
+                    invest: "استثمر",
+                    garbage: "مضيعة مال",
+                    desc: {
+                        noDisposable: "ليس لديك دخل فائض.",
+                        goForIt: "اشتريه، الآن.",
+                        reasonable: "شراء منطقي.",
+                        needIt: "هل تحتاجه فعلاً؟",
+                        save: (amount, months) => `ادّخر ${amount}/شهر لمدة ${months} شهر.`,
+                        notWorth: "لا يستحق الجهد.",
+                        roi: "فقط إذا كان له عائد.",
+                        expensive: "غالي جداً بالنسبة لقيمته."
+                    },
+                    workCost: "تكلفة العمل",
+                    life: "من حياتك",
+                    saveTime: "وقت الادخار",
+                    toAfford: "لشرائه",
+                    years: "> 10 سنوات",
+                    days: "يوم",
+                    trueCost: "التكلفة الحقيقية",
+                    opportunity: "تكلفة الفرصة 10س",
+                    adjust: "تعديل"
+                },
+                footer: {
+                    madeBy: "Can I Afford It? • صنع بواسطة "
+                },
+                reset: "إعادة تعيين"
+            },
+            he: {
+                title: "האם אני יכול להרשות לעצמי?",
+                welcome: {
+                    subtitle: "בדיקת המציאות הפיננסית האישית שלך.",
+                    privacy: "פרטיות קודם",
+                    privacyText: "כל הנתונים נשמרים <strong>מקומית בדפדפן שלך</strong>. מעולם לא נשלחים לשרת.",
+                    daily: "שימוש יומי",
+                    dailyText: "הגדר פעם אחת, השתמש כל יום.",
+                    getStarted: "התחל"
+                },
+                financials: {
+                    title: "פיננסים",
+                    desc: "נתחיל עם ההכנסות וההוצאות שלך.",
+                    income: { label: "הכנסה", monthly: "חודשי", yearly: "שנתי", placeholder: "לדוגמה 1000" },
+                    expenses: { label: "הוצאות", amount: "סכום", percent: "%", placeholder: "לדוגמה 500" },
+                    next: "הבא"
+                },
+                economics: {
+                    title: "כלכלה",
+                    desc: "תנאי שוק המשפיעים על הכסף שלך.",
+                    deposit: "ריבית פיקדון (%)",
+                    inflation: "אינפלציה (%)",
+                    back: "חזור",
+                    next: "הבא"
+                },
+                item: {
+                    title: "רכישה חדשה",
+                    desc: "ספר לנו מה אתה רוצה לקנות.",
+                    price: "מחיר",
+                    credit: { label: "אשראי / תשלומים?", type: "סוג", bnpl: "ללא ריבית (0%)", interest: "ריבית", interestRate: "ריבית %", months: "חודשים" },
+                    unique: { label: "האם זה ייחודי?", yes: "כן 🦄", no: "לא" },
+                    sliders: {
+                        desire: "תשוקה (אוהב את זה?)",
+                        equity: "הון (בונה עושר?)",
+                        mobility: "ניידות (מכירה חוזרת?)",
+                        roi: "תשואה (ירוויח כסף?)",
+                        growth: "צמיחה (הזדמנויות?)"
+                    },
+                    cta: "האם אני יכול?"
+                },
+                verdict: {
+                    title: "פסק הדין",
+                    yes: "כן",
+                    maybe: "אולי",
+                    saveUp: "תחסוך",
+                    no: "לא",
+                    invest: "תשקיע",
+                    garbage: "זבל טהור",
+                    desc: {
+                        noDisposable: "אין לך הכנסה פנויה.",
+                        goForIt: "לך על זה, עכשיו.",
+                        reasonable: "קנייה סבירה.",
+                        needIt: "אתה באמת צריך את זה?",
+                        save: (amount, months) => `חסוך ${amount}/חודש למשך ${months} חודשים.`,
+                        notWorth: "לא שווה את המאמץ.",
+                        roi: "רק אם מביא תשואה.",
+                        expensive: "יקר מדי לערכו."
+                    },
+                    workCost: "עלות עבודה",
+                    life: "מהחיים שלך",
+                    saveTime: "זמן חיסכון",
+                    toAfford: "כדי לקנות",
+                    years: "> 10 שנים",
+                    days: "ימים",
+                    trueCost: "עלות אמיתית",
+                    opportunity: "עלות הזדמנות 10ש",
+                    adjust: "ערוך"
+                },
+                footer: {
+                    madeBy: "Can I Afford It? • נוצר ע״י "
+                },
+                reset: "אפס נתונים"
+            }
+        };
+
         const App = () => {
             // Steps: 0=Welcome, 1=Financials, 2=Economics, 3=Item Input, 4=Verdict
             const [step, setStep] = useState(0);
+
+            // Language
+            const [lang, setLang] = useState('en');
+            const t = TRANSLATIONS[lang];
+            const isRTL = lang === 'ar' || lang === 'he';
 
             // State - Financials
             const [salary, setSalary] = useState(1000);
@@ -192,9 +857,18 @@
             const [possibilities, setPossibilities] = useState(3);
 
             // Persistence
+            // Persistence
             useEffect(() => {
                 const savedFin = localStorage.getItem('ciai_financials');
                 const savedEco = localStorage.getItem('ciai_economics');
+                const savedLang = localStorage.getItem('ciai_language');
+
+                if (savedLang && TRANSLATIONS[savedLang]) {
+                    setLang(savedLang);
+                    const isNewRTL = savedLang === 'ar' || savedLang === 'he';
+                    document.documentElement.dir = isNewRTL ? 'rtl' : 'ltr';
+                    document.documentElement.lang = savedLang;
+                }
 
                 if (savedFin) {
                     const parsed = JSON.parse(savedFin);
@@ -216,6 +890,17 @@
                 }
             }, []);
 
+            // RTL Handling for state changes
+            useEffect(() => {
+                document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
+                document.documentElement.lang = lang;
+            }, [lang, isRTL]);
+
+            const changeLanguage = (newLang) => {
+                setLang(newLang);
+                localStorage.setItem('ciai_language', newLang);
+            };
+
             const saveFinancials = () => {
                 localStorage.setItem('ciai_financials', JSON.stringify({
                     salary, isSalaryMonthly, expenses, isExpensesNumeric
@@ -232,7 +917,7 @@
                 localStorage.removeItem('ciai_financials');
                 localStorage.removeItem('ciai_economics');
                 setStep(0);
-                // Optional: Reset values to defaults? Keeping them might be friendlier.
+                // Keeping language selection
             };
 
             // Logic
@@ -269,49 +954,51 @@
                 const affordabilityRatio = disposableIncome > 0 ? (effectivePrice / disposableIncome) : 100;
 
                 // Decision Logic
-                let decision = "NO";
-                let description = "You can't afford this.";
+                let decision = t.verdict.no;
+                let description = t.verdict.desc.noDisposable;
                 let color = "red";
 
                 if (disposableIncome <= 0) {
-                    decision = "NO";
-                    description = "You have no disposable income.";
+                    decision = t.verdict.no;
+                    description = t.verdict.desc.noDisposable;
                     color = "red";
                 } else if (affordabilityRatio < 0.5) {
-                    decision = "YES";
-                    description = "Go for it, right now.";
+                    decision = t.verdict.yes;
+                    description = t.verdict.desc.goForIt;
                     color = "green";
                 } else if (affordabilityRatio < 3) {
                     // Takes 3 months or less to save
                     if (qualitativeScore > 15) {
-                        decision = "YES";
-                        description = "Reasonable purchase.";
+                        decision = t.verdict.yes;
+                        description = t.verdict.desc.reasonable;
                         color = "green";
                     } else {
-                        decision = "MAYBE";
-                        description = "Do you really need it?";
+                        decision = t.verdict.maybe;
+                        description = t.verdict.desc.needIt;
                         color = "yellow";
                     }
                 } else if (affordabilityRatio < 12) {
                     // Takes up to a year to save
                     if (qualitativeScore > 30) {
-                        decision = "SAVE UP";
-                        description = `Save ${(effectivePrice / Math.ceil(datesToSave / 30)).toFixed(0)}/mo for ${Math.ceil(datesToSave / 30)} months.`;
+                        decision = t.verdict.saveUp;
+                        const amount = (effectivePrice / Math.ceil(datesToSave / 30)).toFixed(0);
+                        const months = Math.ceil(datesToSave / 30);
+                        description = t.verdict.desc.save(amount, months);
                         color = "blue";
                     } else {
-                        decision = "NO";
-                        description = "Not worth the effort.";
+                        decision = t.verdict.no;
+                        description = t.verdict.desc.notWorth;
                         color = "red";
                     }
                 } else {
                     // Over a year to save
                     if (qualitativeScore > 40 && futureReturns > 7) {
-                        decision = "INVEST";
-                        description = "Only if it brings ROI.";
+                        decision = t.verdict.invest;
+                        description = t.verdict.desc.roi;
                         color = "purple";
                     } else {
-                        decision = "PURE GARBAGE";
-                        description = "Too expensive for its value.";
+                        decision = t.verdict.garbage;
+                        description = t.verdict.desc.expensive;
                         color = "red";
                     }
                 }
@@ -350,7 +1037,7 @@
                     opportunityCost10Y
                 };
 
-            }, [salary, isSalaryMonthly, expenses, isExpensesNumeric, itemPrice, credit, isBNPL, interestRate, creditTerm, depositRate, desire, equity, mobility, futureReturns, possibilities, isUnique]);
+            }, [salary, isSalaryMonthly, expenses, isExpensesNumeric, itemPrice, credit, isBNPL, interestRate, creditTerm, depositRate, desire, equity, mobility, futureReturns, possibilities, isUnique, lang]);
 
 
             // Navigation Handlers
@@ -370,14 +1057,14 @@
                 <div className="fixed top-0 left-0 right-0 z-50 glass-panel border-b border-white/10 backdrop-blur-xl bg-black/40">
                     <div className="max-w-md mx-auto px-4 py-4 flex items-center justify-between">
                         <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
-                            Can I afford it?
+                            {t.title}
                         </h1>
                         {step >= 3 && (
                             <button
                                 onClick={resetAll}
                                 className="text-xs text-gray-400 hover:text-white underline"
                             >
-                                Reset finances
+                                {t.reset}
                             </button>
                         )}
                     </div>
@@ -388,39 +1075,64 @@
                 <div className="fixed bottom-0 left-0 right-0 z-50 glass-panel border-t border-white/10 backdrop-blur-xl bg-black/40">
                     <div className="max-w-md mx-auto px-4 py-3 text-center">
                         <div className="text-[10px] text-gray-500">
-                            Can I Afford It? • Made by <a href="axelrod.co">axelrod.co</a>
+                            {t.footer.madeBy} <a href="https://axelrod.co" target="_blank" className="underline hover:text-white">axelrod.co</a>
                         </div>
                     </div>
                 </div>
             );
 
+            const LanguagePicker = () => (
+                <div className="grid grid-cols-3 gap-2 mb-6">
+                    {[
+                        { code: 'en', flag: '🇬🇧', name: 'English' },
+                        { code: 'es', flag: '🇪🇸', name: 'Español' },
+                        { code: 'de', flag: '🇩🇪', name: 'Deutsch' },
+                        { code: 'fr', flag: '🇫🇷', name: 'Français' },
+                        { code: 'it', flag: '🇮🇹', name: 'Italiano' },
+                        { code: 'ru', flag: '🇷🇺', name: 'Русский' },
+                        { code: 'tr', flag: '🇹🇷', name: 'Türkçe' },
+                        { code: 'ar', flag: '🇸🇦', name: 'العربية' },
+                        { code: 'he', flag: '🇮🇱', name: 'עברית' }
+                    ].map(l => (
+                        <button
+                            key={l.code}
+                            onClick={() => changeLanguage(l.code)}
+                            className={`p-2 rounded-lg text-xs font-medium transition-all ${lang === l.code ? 'bg-blue-600 text-white shadow-lg scale-105' : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'}`}
+                        >
+                            <span className="text-lg block mb-1">{l.flag}</span>
+                            {l.name}
+                        </button>
+                    ))}
+                </div>
+            );
+
             const renderWelcome = () => (
                 <div className="glass-panel p-6 rounded-2xl animate-fade-in text-center space-y-6">
-                    <div className="py-8">
+                    <LanguagePicker />
+
+                    <div className="py-4">
                         <div className="text-6xl mb-4">💸</div>
                         <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400 mb-2">
-                            Can I afford it?
+                            {t.title}
                         </h2>
                         <p className="text-gray-300">
-                            Your personal financial reality check.
+                            {t.welcome.subtitle}
                         </p>
                     </div>
 
                     <div className="bg-white/5 rounded-xl p-4 text-left border border-white/10">
                         <h3 className="text-sm font-bold text-green-400 mb-2 flex items-center gap-2">
-                            <Icons.Check /> Privacy First
+                            <Icons.Check /> {t.welcome.privacy}
                         </h3>
-                        <p className="text-xs text-gray-400 leading-relaxed">
-                            All your data is stored <strong>locally in your browser</strong>. It is never sent to any server.
-                        </p>
+                        <p className="text-xs text-gray-400 leading-relaxed" dangerouslySetInnerHTML={{ __html: t.welcome.privacyText }}></p>
                     </div>
 
                     <div className="bg-white/5 rounded-xl p-4 text-left border border-white/10">
                         <h3 className="text-sm font-bold text-green-400 mb-2 flex items-center gap-2">
-                            <Icons.Check /> Daily usage
+                            <Icons.Check /> {t.welcome.daily}
                         </h3>
                         <p className="text-xs text-gray-400 leading-relaxed">
-                            Set up your financial details once, then use the app every day.
+                            {t.welcome.dailyText}
                         </p>
                     </div>
 
@@ -428,7 +1140,7 @@
                         onClick={goNext}
                         className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-xl shadow-lg transition-all active:scale-95 text-lg"
                     >
-                        Get Started
+                        {t.welcome.getStarted}
                     </button>
                 </div>
             );
@@ -436,45 +1148,45 @@
             const renderFinancials = () => (
                 <div className="glass-panel p-6 rounded-2xl animate-fade-in">
                     <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-                        <span className="text-green-400">$</span> Financials
+                        <span className="text-green-400">$</span> {t.financials.title}
                     </h2>
-                    <p className="text-sm text-gray-400 mb-6">Let's start with your income and expenses.</p>
+                    <p className="text-sm text-gray-400 mb-6">{t.financials.desc}</p>
 
                     <Toggle
-                        label="Income"
+                        label={t.financials.income.label}
                         value={isSalaryMonthly}
                         onChange={setIsSalaryMonthly}
-                        leftLabel="Monthly"
-                        rightLabel="Yearly"
+                        leftLabel={t.financials.income.monthly}
+                        rightLabel={t.financials.income.yearly}
                     />
                     <input
                         type="number"
                         className="w-full input-glass p-4 rounded-lg mb-6 text-lg"
                         value={salary}
                         onChange={e => setSalary(e.target.value === "" ? "" : Number(e.target.value))}
-                        placeholder="e.g. 1000"
+                        placeholder={t.financials.income.placeholder}
                     />
 
                     <Toggle
-                        label="Expenses"
+                        label={t.financials.expenses.label}
                         value={isExpensesNumeric}
                         onChange={setIsExpensesNumeric}
-                        leftLabel="Amount"
-                        rightLabel="%"
+                        leftLabel={t.financials.expenses.amount}
+                        rightLabel={t.financials.expenses.percent}
                     />
                     <input
                         type="number"
-                        className="w-full input-glass p-4 rounded-lg mb-6 text-lg"
+                        className="w-full input-glass p-4 rounded-lg mb-8 text-lg"
                         value={expenses}
                         onChange={e => setExpenses(e.target.value === "" ? "" : Number(e.target.value))}
-                        placeholder="e.g. 500"
+                        placeholder={t.financials.expenses.placeholder}
                     />
 
                     <button
                         onClick={goNext}
-                        className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-xl shadow-lg transition-all active:scale-95"
+                        className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-xl shadow-lg transition-all active:scale-95 text-lg"
                     >
-                        Next
+                        {t.financials.next}
                     </button>
                 </div>
             );
@@ -482,12 +1194,12 @@
             const renderEconomics = () => (
                 <div className="glass-panel p-6 rounded-2xl animate-fade-in">
                     <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-                        <span className="text-purple-400">📈</span> Economics
+                        <span className="text-purple-400">📈</span> {t.economics.title}
                     </h2>
-                    <p className="text-sm text-gray-400 mb-6">Market conditions affecting your money.</p>
+                    <p className="text-sm text-gray-400 mb-6">{t.economics.desc}</p>
 
                     <div className="mb-6">
-                        <label className="text-sm text-gray-300 block mb-2">Deposit Rate (%)</label>
+                        <label className="block text-sm font-medium text-gray-300 mb-2">{t.economics.deposit}</label>
                         <input
                             type="number"
                             className="w-full input-glass p-4 rounded-lg text-lg"
@@ -497,7 +1209,7 @@
                     </div>
 
                     <div className="mb-8">
-                        <label className="text-sm text-gray-300 block mb-2">Inflation Rate (%)</label>
+                        <label className="block text-sm font-medium text-gray-300 mb-2">{t.economics.inflation}</label>
                         <input
                             type="number"
                             className="w-full input-glass p-4 rounded-lg text-lg"
@@ -511,13 +1223,13 @@
                             onClick={goBack}
                             className="w-1/3 bg-white/10 hover:bg-white/20 text-white font-bold py-4 rounded-xl transition-all"
                         >
-                            Back
+                            {t.economics.back}
                         </button>
                         <button
                             onClick={goNext}
-                            className="w-2/3 bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-xl shadow-lg transition-all active:scale-95"
+                            className="w-2/3 bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-xl shadow-lg transition-all active:scale-95 text-lg"
                         >
-                            Next
+                            {t.economics.next}
                         </button>
                     </div>
                 </div>
@@ -527,13 +1239,13 @@
                 <div className="glass-panel p-6 rounded-2xl animate-fade-in space-y-6">
                     <div>
                         <h2 className="text-xl font-bold mb-1 flex items-center gap-2">
-                            <span className="text-blue-400">🛍</span> New Purchase
+                            <span className="text-blue-400">🛍</span> {t.item.title}
                         </h2>
-                        <p className="text-xs text-gray-400">Tell us about what you want to buy.</p>
+                        <p className="text-xs text-gray-400">{t.item.desc}</p>
                     </div>
 
                     <div>
-                        <label className="text-sm text-gray-400 block mb-1">Price</label>
+                        <label className="text-sm text-gray-400 block mb-1">{t.item.price}</label>
                         <input
                             type="number"
                             className="w-full input-glass p-3 rounded-lg text-lg font-bold text-green-300"
@@ -544,7 +1256,7 @@
 
                     <div className="glass-panel p-4 rounded-xl bg-black/20">
                         <div className="flex items-center justify-between">
-                            <span className="text-gray-300 font-medium">Credit / BNPL?</span>
+                            <span className="text-gray-300 font-medium">{t.item.credit.label}</span>
                             <button
                                 onClick={() => setCredit(!credit)}
                                 className={`w-12 h-6 rounded-full transition-colors relative ${credit ? 'bg-blue-500' : 'bg-gray-600'}`}
@@ -556,16 +1268,16 @@
                         {credit && (
                             <div className="mt-4 pt-4 border-t border-white/10 animate-fade-in">
                                 <Toggle
-                                    label="Type"
+                                    label={t.item.credit.type}
                                     value={isBNPL}
                                     onChange={setIsBNPL}
-                                    leftLabel="BNPL (0%)"
-                                    rightLabel="Interest"
+                                    leftLabel={t.item.credit.bnpl}
+                                    rightLabel={t.item.credit.interest}
                                 />
                                 {!isBNPL && (
                                     <div className="flex gap-2 mt-2">
                                         <div className="w-1/2">
-                                            <label className="text-xs text-gray-400">Interest %</label>
+                                            <label className="text-xs text-gray-400">{t.item.credit.interestRate}</label>
                                             <input
                                                 type="number"
                                                 className="w-full input-glass p-2 rounded-lg mt-1"
@@ -574,7 +1286,7 @@
                                             />
                                         </div>
                                         <div className="w-1/2">
-                                            <label className="text-xs text-gray-400">Months</label>
+                                            <label className="text-xs text-gray-400">{t.item.credit.months}</label>
                                             <input
                                                 type="number"
                                                 className="w-full input-glass p-2 rounded-lg mt-1"
@@ -590,21 +1302,21 @@
 
                     <div className="glass-panel p-4 rounded-xl bg-black/20">
                         <div className="flex items-center justify-between mb-4">
-                            <span className="text-gray-300 font-medium">Is it unique?</span>
+                            <span className="text-gray-300 font-medium">{t.item.unique.label}</span>
                             <button
                                 onClick={() => setIsUnique(!isUnique)}
                                 className={`px-3 py-1 text-sm rounded-lg transition-all border ${isUnique ? 'bg-yellow-500/20 border-yellow-500 text-yellow-300' : 'border-gray-600 text-gray-400'}`}
                             >
-                                {isUnique ? 'Yes 🦄' : 'No'}
+                                {isUnique ? t.item.unique.yes : t.item.unique.no}
                             </button>
                         </div>
 
                         <div className="space-y-4">
-                            <MetricSlider label="Desire (Do you love it?)" value={desire} onChange={setDesire} />
-                            <MetricSlider label="Equity (Wealth builder?)" value={equity} onChange={setEquity} />
-                            <MetricSlider label="Mobility (Resale value?)" value={mobility} onChange={setMobility} />
-                            <MetricSlider label="ROI (Will it earn money?)" value={futureReturns} onChange={setFutureReturns} />
-                            <MetricSlider label="Growth (New opportunities?)" value={possibilities} onChange={setPossibilities} />
+                            <MetricSlider label={t.item.sliders.desire} value={desire} onChange={setDesire} />
+                            <MetricSlider label={t.item.sliders.equity} value={equity} onChange={setEquity} />
+                            <MetricSlider label={t.item.sliders.mobility} value={mobility} onChange={setMobility} />
+                            <MetricSlider label={t.item.sliders.roi} value={futureReturns} onChange={setFutureReturns} />
+                            <MetricSlider label={t.item.sliders.growth} value={possibilities} onChange={setPossibilities} />
                         </div>
                     </div>
 
@@ -615,7 +1327,7 @@
                         }}
                         className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-400 hover:to-emerald-500 text-white font-bold py-4 rounded-xl shadow-lg transition-all active:scale-95 text-lg"
                     >
-                        Can I afford it?
+                        {t.item.cta}
                     </button>
                 </div>
             );
@@ -624,7 +1336,7 @@
                 <div className="space-y-6 animate-fade-in">
                     <div className="glass-panel p-8 rounded-2xl relative overflow-hidden text-center">
                         <div className={`absolute top-0 left-0 w-full h-2 bg-${stats.color}-500 shadow-[0_0_20px_rgba(var(--color-${stats.color}-500),0.5)]`}></div>
-                        <h2 className="text-sm uppercase tracking-widest text-gray-400 mb-3">The Verdict</h2>
+                        <h2 className="text-sm uppercase tracking-widest text-gray-400 mb-3">{t.verdict.title}</h2>
                         <div className={`text-6xl font-black text-${stats.color}-400 mb-4 tracking-tight`}>
                             {stats.decision}
                         </div>
@@ -633,27 +1345,27 @@
 
                     <div className="grid grid-cols-2 gap-4">
                         <ResultCard
-                            title="Work Cost"
-                            value={`${stats.workDaysToEarn.toFixed(1)} Days`}
-                            subtext="of your life"
+                            title={t.verdict.workCost}
+                            value={`${stats.workDaysToEarn.toFixed(1)} ${t.verdict.days}`}
+                            subtext={t.verdict.life}
                         />
                         <ResultCard
-                            title="Save Time"
-                            value={stats.datesToSave > 3650 ? "> 10 Years" : `${stats.datesToSave.toFixed(0)} Days`}
-                            subtext="to afford it"
+                            title={t.verdict.saveTime}
+                            value={stats.datesToSave > 3650 ? t.verdict.years : `${stats.datesToSave.toFixed(0)} ${t.verdict.days}`}
+                            subtext={t.verdict.toAfford}
                         />
                     </div>
 
                     <div className="glass-panel p-4 rounded-2xl">
                         <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <span className="text-xs text-gray-400 uppercase tracking-wider block mb-1">True Cost</span>
+                                <span className="text-xs text-gray-400 uppercase tracking-wider block mb-1">{t.verdict.trueCost}</span>
                                 <span className="text-lg font-bold text-orange-300">
                                     {stats.creditTotalCost.toFixed(0)}
                                 </span>
                             </div>
                             <div>
-                                <span className="text-xs text-gray-400 uppercase tracking-wider block mb-1">10y Opportunity</span>
+                                <span className="text-xs text-gray-400 uppercase tracking-wider block mb-1">{t.verdict.opportunity}</span>
                                 <span className="text-lg font-bold text-yellow-300">
                                     {stats.opportunityCost10Y.toFixed(0)}
                                 </span>
@@ -668,7 +1380,7 @@
                         }}
                         className="w-full bg-white/10 hover:bg-white/20 text-white font-bold py-4 rounded-xl transition-all"
                     >
-                        Adjust Input
+                        {t.verdict.adjust}
                     </button>
                 </div>
             );
