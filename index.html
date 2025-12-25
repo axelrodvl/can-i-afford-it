@@ -237,15 +237,22 @@
 
             // Logic
             const stats = useMemo(() => {
-                const monthlyIncome = isSalaryMonthly ? salary : salary / 12;
-                const monthlyExpenses = isExpensesNumeric ? expenses : (monthlyIncome * (expenses / 100));
+                const s = salary === "" ? 0 : salary;
+                const e = expenses === "" ? 0 : expenses;
+                const iPrice = itemPrice === "" ? 0 : itemPrice;
+                const depRate = depositRate === "" ? 0 : depositRate;
+                const intRate = interestRate === "" ? 0 : interestRate;
+                const cTerm = creditTerm === "" ? 0 : creditTerm;
+
+                const monthlyIncome = isSalaryMonthly ? s : s / 12;
+                const monthlyExpenses = isExpensesNumeric ? e : (monthlyIncome * (e / 100));
                 const disposableIncome = monthlyIncome - monthlyExpenses;
                 const dailyDisposable = disposableIncome > 0 ? disposableIncome / 30 : 0;
                 const dailyTotalIncome = monthlyIncome / 30;
 
                 const effectivePrice = credit && !isBNPL
-                    ? itemPrice * (1 + (interestRate / 100))
-                    : itemPrice;
+                    ? iPrice * (1 + (intRate / 100))
+                    : iPrice;
 
                 // Time to convert life into item
                 const workDaysToEarn = dailyTotalIncome > 0 ? (effectivePrice / dailyTotalIncome) : 9999;
@@ -310,28 +317,28 @@
                 }
 
                 // Financial Calcs for "True Cost"
-                let creditTotalCost = itemPrice;
+                let creditTotalCost = iPrice;
                 let monthlyPayment = 0;
 
                 if (credit) {
                     if (isBNPL) {
-                        creditTotalCost = itemPrice;
-                        monthlyPayment = itemPrice / (creditTerm || 1);
+                        creditTotalCost = iPrice;
+                        monthlyPayment = iPrice / (cTerm || 1);
                     } else {
-                        const r = (interestRate / 100) / 12;
-                        const n = creditTerm;
+                        const r = (intRate / 100) / 12;
+                        const n = cTerm;
                         if (r === 0) {
-                            monthlyPayment = itemPrice / n;
-                            creditTotalCost = itemPrice;
+                            monthlyPayment = iPrice / n;
+                            creditTotalCost = iPrice;
                         } else {
-                            monthlyPayment = itemPrice * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+                            monthlyPayment = iPrice * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
                             creditTotalCost = monthlyPayment * n;
                         }
                     }
                 }
 
-                const futureValue10Y = itemPrice * Math.pow(1 + (depositRate / 100), 10);
-                const opportunityCost10Y = futureValue10Y - itemPrice;
+                const futureValue10Y = iPrice * Math.pow(1 + (depRate / 100), 10);
+                const opportunityCost10Y = futureValue10Y - iPrice;
 
                 return {
                     workDaysToEarn,
@@ -405,7 +412,7 @@
                         type="number"
                         className="w-full input-glass p-4 rounded-lg mb-6 text-lg"
                         value={salary}
-                        onChange={e => setSalary(Number(e.target.value))}
+                        onChange={e => setSalary(e.target.value === "" ? "" : Number(e.target.value))}
                         placeholder="e.g. 1000"
                     />
 
@@ -420,7 +427,7 @@
                         type="number"
                         className="w-full input-glass p-4 rounded-lg mb-6 text-lg"
                         value={expenses}
-                        onChange={e => setExpenses(Number(e.target.value))}
+                        onChange={e => setExpenses(e.target.value === "" ? "" : Number(e.target.value))}
                         placeholder="e.g. 500"
                     />
 
@@ -446,7 +453,7 @@
                             type="number"
                             className="w-full input-glass p-4 rounded-lg text-lg"
                             value={depositRate}
-                            onChange={e => setDepositRate(Number(e.target.value))}
+                            onChange={e => setDepositRate(e.target.value === "" ? "" : Number(e.target.value))}
                         />
                     </div>
 
@@ -456,7 +463,7 @@
                             type="number"
                             className="w-full input-glass p-4 rounded-lg text-lg"
                             value={inflationRate}
-                            onChange={e => setInflationRate(Number(e.target.value))}
+                            onChange={e => setInflationRate(e.target.value === "" ? "" : Number(e.target.value))}
                         />
                     </div>
 
@@ -492,7 +499,7 @@
                             type="number"
                             className="w-full input-glass p-3 rounded-lg text-lg font-bold text-green-300"
                             value={itemPrice}
-                            onChange={e => setItemPrice(Number(e.target.value))}
+                            onChange={e => setItemPrice(e.target.value === "" ? "" : Number(e.target.value))}
                         />
                     </div>
 
@@ -524,7 +531,7 @@
                                                 type="number"
                                                 className="w-full input-glass p-2 rounded-lg mt-1"
                                                 value={interestRate}
-                                                onChange={e => setInterestRate(Number(e.target.value))}
+                                                onChange={e => setInterestRate(e.target.value === "" ? "" : Number(e.target.value))}
                                             />
                                         </div>
                                         <div className="w-1/2">
@@ -533,7 +540,7 @@
                                                 type="number"
                                                 className="w-full input-glass p-2 rounded-lg mt-1"
                                                 value={creditTerm}
-                                                onChange={e => setCreditTerm(Number(e.target.value))}
+                                                onChange={e => setCreditTerm(e.target.value === "" ? "" : Number(e.target.value))}
                                             />
                                         </div>
                                     </div>
@@ -601,15 +608,15 @@
                     <div className="glass-panel p-4 rounded-2xl">
                         <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <span className="text-xs text-gray-400 uppercase tracking-wider block mb-1">True Credit Cost</span>
+                                <span className="text-xs text-gray-400 uppercase tracking-wider block mb-1">True Cost</span>
                                 <span className="text-lg font-bold text-orange-300">
-                                    ${stats.creditTotalCost.toFixed(0)}
+                                    {stats.creditTotalCost.toFixed(0)}
                                 </span>
                             </div>
                             <div>
                                 <span className="text-xs text-gray-400 uppercase tracking-wider block mb-1">10y Opportunity</span>
                                 <span className="text-lg font-bold text-yellow-300">
-                                    ${stats.opportunityCost10Y.toFixed(0)}
+                                    {stats.opportunityCost10Y.toFixed(0)}
                                 </span>
                             </div>
                         </div>
